@@ -2,41 +2,68 @@ import React from 'react';
 import { 
   StyleSheet, 
   Text, 
-  View
+  View,
+  Image,
+  TouchableOpacity,
+  Alert
+  
+  
  } from 'react-native';
 
 export default class App extends React.Component {
   
   render() {
-    const {principal,topo ,conteudo,rodape} = Estilos;
+    const {principal,botao,textoBotao} = Estilos;
     return (
      
       <View style={principal}>
-            <Text style={topo}>Topo</Text>
-            <Text style={conteudo}>Conteúdo</Text>
-            <Text style={rodape}>Rodapé</Text>
+        <Image source={require('./imgs/logo.png')}/>
+
+        <TouchableOpacity style={botao} onPress={gerarNovaFrase}>
+          <Text style={textoBotao}>Nova Frase</Text>
+        </TouchableOpacity>
+
       </View>
+    
     );
   }
 }
 
 const Estilos = {
-  principal: {
-    flex: 2,
-    backgroundColor: 'cornflowerblue'
+  principal:{
+    flex:1,
+    justifyContent:'center',
+    alignItems:'center'
+    
   },
-  topo: {
-    flex: 1,
-    backgroundColor: 'brown'
+  botao:{
+    backgroundColor:'#538530',
+    paddingVertical:10,
+    paddingHorizontal:40,
+    marginTop:20
   },
-  conteudo: {
-    flex: 8,
-    backgroundColor: 'yellowgreen'
-  },
-  rodape: {
-    flex: 1,
-    backgroundColor: 'orangered'
-  },
+  textoBotao: {
+    color:'white',
+    fontSize:16,
+    fontWeight:'bold'
+  }
+  
+}
+
+var gerarNovaFrase = () => {
+  var numeroAleatorio = Math.random();
+  numeroAleatorio = Math.floor(numeroAleatorio * 5);
+  
+  var frases =  Array();
+  
+  frases[0] = 'Klaatu Barada Nikitu';
+  frases[1] = 'bb';
+  frases[2] = 'cc';
+  frases[3] = 'dd';
+  frases[4] = 'ee';
+
+  Alert.alert(frases[numeroAleatorio]);
+
 }
 
 // const Estilos = {
