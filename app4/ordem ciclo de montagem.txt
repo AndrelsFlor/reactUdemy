@@ -1,0 +1,10 @@
+constructor 
+
+componentWillMount
+
+render
+
+componentDidMount
+
+
+embora o render acontecça entre willMount e didMout, é convenção colocar o didMount antes do render
