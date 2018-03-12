@@ -1,13 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View, StatusBar } from 'react-native';
-import BarraNavegacao from './src/components/BarraNavegacao';
-export default class App extends React.Component {
-  render() {
-    return (
-      <View>
-        <StatusBar backgroundColor="#CCC" />
-        <BarraNavegacao />
-      </View>
-    );
-  }
-}
+import { StyleSheet, Text, View } from 'react-native';
+import { StackNavigator } from 'react-navigation';
+
+import CenaPrincipal from './src/components/CenaPrincipal';
+import CenaClientes from './src/components/CenaClientes';
+
+const Navigation = StackNavigator({
+  Principal: { screen: CenaPrincipal },
+  Clientes: { screen: CenaClientes }
+});
+
+export default Navigation;
