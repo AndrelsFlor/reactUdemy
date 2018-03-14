@@ -8,12 +8,6 @@ import BoasVindas from './components/BoasVindas';
 import Principal from './components/Principal';
 
 class Routes extends Component {
-  constructor(props) {
-    super(props);
-    this.props.userStorage();
-    console.log(this.props);
-  }
-
   render() {
     return (
       <Router
@@ -26,6 +20,7 @@ class Routes extends Component {
             component={FormLogin}
             title="Login"
             hideNavBar={true}
+            onEnter={this.props.userStorage()}
             initial={!this.props.user_storage}
           />
           <Scene
@@ -45,6 +40,7 @@ class Routes extends Component {
             component={Principal}
             title="Principal"
             hideNavBar={true}
+            onEnter={this.props.userStorage()}
             initial={this.props.user_storage}
           />
         </Scene>

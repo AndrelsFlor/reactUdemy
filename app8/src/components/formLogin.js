@@ -19,6 +19,14 @@ import {
 } from './../actions/AutenticacaoActions';
 
 class formLogin extends Component {
+  constructor(props) {
+    super(props);
+    if (this.props.user_storage) {
+      Actions.principal();
+    }
+    console.log(this.props);
+  }
+
   _autenticarUsuario() {
     const { email, senha } = this.props;
     this.props.autenticarUsuario(email, senha);
@@ -84,7 +92,8 @@ const mapStateToProps = state => ({
   email: state.AutenticacaoReducer.email,
   senha: state.AutenticacaoReducer.senha,
   erroLogin: state.AutenticacaoReducer.erroLogin,
-  loading_login: state.AutenticacaoReducer.loading_login
+  loading_login: state.AutenticacaoReducer.loading_login,
+  user_storage: state.AutenticacaoReducer.user_storage
 });
 
 export default connect(mapStateToProps, {
