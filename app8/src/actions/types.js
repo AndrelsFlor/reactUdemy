@@ -8,3 +8,6 @@ export const LOGIN_USUARIO_ERRO = 'login_usuario_erro';
 export const LOGIN_EM_ANDAMENTO = 'login_em_andamento';
 export const CADASTRO_EM_ANDAMENTO = 'cadastro_em_andamento';
 export const USUARIO_NO_STORAGE_LOCAL = 'usuario_no_storage_local';
+export const MODIFICA_ORIGEM_COMERCIAL = 'modifica_origem_comercial';
+export const MODIFICA_CPF_CNPJ = 'modifica_cpf_cnpj';
+export const MODIFICA_NOME_TITULAR = 'modifica_nome_titular';

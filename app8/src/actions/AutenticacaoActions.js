@@ -80,7 +80,7 @@ const cadastroUsuarioErro = (erro, dispatch) => {
 export const autenticarUsuario = (email, senha) => {
   return dispatch => {
     dispatch({ type: LOGIN_EM_ANDAMENTO });
-
+    console.log();
     firebase
       .auth()
       .signInWithEmailAndPassword(email, senha)
@@ -90,51 +90,44 @@ export const autenticarUsuario = (email, senha) => {
 };
 
 export const userStorage = () => {
-  return {
-    type: USUARIO_NO_STORAGE_LOCAL
+  // return {
+  //   type: USUARIO_NO_STORAGE_LOCAL
+  // };
+
+  return dispatch => {
+    try {
+      AsyncStorage.getItem('email').then(emailBanco => {
+        // console.log(emailBanco);
+        if (emailBanco) {
+          AsyncStorage.getItem('senha').then(senhaBanco => {
+            dispatch({ type: LOGIN_EM_ANDAMENTO });
+            console.log();
+            firebase
+              .auth()
+              .signInWithEmailAndPassword(emailBanco, senhaBanco)
+              .then(value =>
+                loginUsuarioSucesso(dispatch, emailBanco, senhaBanco)
+              )
+              .catch(erro => loginUsuarioErro(erro, dispatch));
+          });
+        } else {
+          return Actions.formLogin();
+        }
+      });
+    } catch (erro) {
+      console.log(erro);
+    }
   };
-
-  // return dispatch => {
-  //   try {
-  //     AsyncStorage.getItem('email').then(emailBanco => {
-  //       console.log(emailBanco);
-  //       if (emailBanco) {
-  //         dispatch({
-  //           type: USUARIO_NO_STORAGE_LOCAL
-  //         });
-  //       } else {
-  //         return false;
-  //       }
-  //     });
-  //   } catch (erro) {
-  //     console.log(erro);
-  //   }
-  // };
-
-  // return dispatch => {
-  //   AsyncStorage.getItem('email').then(emailBanco => {
-  //     console.log('entrou then');
-  //     console.log(emailBanco);
-  //     if (emailBanco != null) {
-  //       dispatch({
-  //         type: USARIO_NO_STORAGE_LOCAL
-  //       });
-  //       // AsyncStorage.getItem('senha').then(senhaBanco => {
-  //       //   firebase
-  //       //     .auth()
-  //       //     .signInWithEmailAndPassword(emailBanco, senhaBanco)
-  //       //     .then(value =>
-  //       //       dispatch({
-  //       //         type: USARIO_NO_STORAGE_LOCAL
-  //       //       })
-  //       //     )
-  //       //     .catch(erro => loginUsuarioErro(erro, dispatch));
-  //       // });
-  //     }
-  //   });
-  // };
 };
-
+const getSenha = (dispatch, emailBanco) => {
+  AsyncStorage.getItem('senha').then(senhaBanco => {
+    console.log(emailBanco);
+    console.log(senhaBanco);
+    dispatch({
+      type: USUARIO_NO_STORAGE_LOCAL
+    });
+  });
+};
 const verificaUserStorage = () => {};
 
 const loginUsuarioSucesso = (dispatch, email, senha) => {

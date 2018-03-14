@@ -1,17 +1,48 @@
-import React from 'react';
-import { View, Text, Button, Image, ImageBackground } from 'react-native';
+import React, { Component } from 'react';
+import {
+  View,
+  Text,
+  Button,
+  Image,
+  ImageBackground,
+  ActivityIndicator
+} from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import { userStorage } from './../actions/AutenticacaoActions';
+import { connect } from 'react-redux';
 
-export default props => (
-  <ImageBackground style={{ flex: 1 }} source={require('./../imgs/bg.png')}>
-    <View style={{ flex: 1, padding: 15 }}>
-      <View style={{ flex: 2, justifyContent: 'center', alignItems: 'center' }}>
-        <Text style={{ fontSize: 20, color: '#fff' }}>Seja Bem-Vindo</Text>
-        <Image source={require('./../imgs/logo.png')} />
+class BoasVindas extends Component {
+  constructor(props) {
+    super(props);
+    this.props.userStorage();
+  }
+  render() {
+    return (
+      <View style={{ flex: 1, backgroundColor: '#263238' }}>
+        <View style={{ flex: 1, padding: 15 }}>
+          <View
+            style={{ flex: 2, justifyContent: 'center', alignItems: 'center' }}
+          >
+            <Text style={{ fontSize: 20, color: '#f4511e' }}>
+              Bem-vindo! Aguarde enquanto
+            </Text>
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <Text style={{ fontSize: 20, color: '#f4511e' }}>
+                verificamos sua conta
+              </Text>
+            </View>
+          </View>
+          <View style={{ flex: 1 }}>
+            <ActivityIndicator size="large" />
+          </View>
+        </View>
       </View>
-      <View style={{ flex: 1 }}>
-        <Button title="Fazer Login" onPress={() => Actions.formLogin()} />
-      </View>
-    </View>
-  </ImageBackground>
-);
+    );
+  }
+}
+
+const mapStateToProps = state => ({
+  user_storage: state.AutenticacaoReducer.user_storage
+});
+
+export default connect(mapStateToProps, { userStorage })(BoasVindas);

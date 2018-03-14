@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Router, Scene } from 'react-native-router-flux';
 import { userStorage } from './actions/AutenticacaoActions';
 import { connect } from 'react-redux';
+// import {AsyncStorage} from 'react-native';
 import FormLogin from './components/formLogin';
 import FormCadastro from './components/FormCadastro';
 import BoasVindas from './components/BoasVindas';
@@ -16,12 +17,17 @@ class Routes extends Component {
       >
         <Scene>
           <Scene
+            key="boasVindas"
+            component={BoasVindas}
+            title="Bem-Vindo"
+            hideNavBar={true}
+            initial={true}
+          />
+          <Scene
             key="formLogin"
             component={FormLogin}
             title="Login"
             hideNavBar={true}
-            onEnter={this.props.userStorage()}
-            initial={!this.props.user_storage}
           />
           <Scene
             key="formCadastro"
@@ -29,19 +35,12 @@ class Routes extends Component {
             title="Cadastro"
             hideNavBar={false}
           />
-          <Scene
-            key="boasVindas"
-            component={BoasVindas}
-            title="Bem-Vindo"
-            hideNavBar={true}
-          />
+
           <Scene
             key="principal"
             component={Principal}
             title="Principal"
             hideNavBar={true}
-            onEnter={this.props.userStorage()}
-            initial={this.props.user_storage}
           />
         </Scene>
       </Router>

@@ -8,23 +8,25 @@ import {
   ImageBackground,
   ActivityIndicator
 } from 'react-native';
-
+import TextField from 'react-native-md-textinput';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 //Action
 import {
   modificaEmail,
   modificaSenha,
-  autenticarUsuario
+  autenticarUsuario,
+  userStorage
 } from './../actions/AutenticacaoActions';
 
 class formLogin extends Component {
-  constructor(props) {
-    super(props);
-    if (this.props.user_storage) {
-      Actions.principal();
-    }
-    console.log(this.props);
+  componentWillMount() {
+    // super(props);
+    // this.props.userStorage();
+    // if (this.props.user_storage) {
+    //   Actions.principal();
+    // }
+    // console.log(this.props);
   }
 
   _autenticarUsuario() {
@@ -39,31 +41,35 @@ class formLogin extends Component {
     return (
       <Button
         title="Acessar"
-        color="#115E54"
+        color="#ff3d00"
         onPress={() => this._autenticarUsuario()}
       />
     );
   }
   render() {
     return (
-      <ImageBackground style={{ flex: 1 }} source={require('./../imgs/bg.png')}>
+      <View style={{ flex: 1, backgroundColor: '#263238' }}>
         <View style={{ flex: 1, padding: 10 }}>
           <View
             style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
           >
-            <Text style={{ fontSize: 25, color: '#fff' }}>Whatsapp clone</Text>
+            <Text style={{ fontSize: 25, color: '#ffab91' }}>SimProvider</Text>
           </View>
           <View style={{ flex: 2 }}>
-            <TextInput
+            <TextField
               value={this.props.email}
-              style={{ fontSize: 20, height: 45 }}
-              placeholder="E-mail"
+              style={{ fontSize: 20, height: 45, color: '#fff' }}
+              label={'E-mail'}
+              highlightColor={'#f4511e'}
+              height={30}
               onChangeText={texto => this.props.modificaEmail(texto)}
             />
-            <TextInput
+            <TextField
               value={this.props.senha}
-              style={{ fontSize: 20, height: 45 }}
-              placeholder="Senha"
+              style={{ fontSize: 20, height: 45, color: '#fff' }}
+              label={'Senha'}
+              highlightColor={'#f4511e'}
+              height={30}
               secureTextEntry
               onChangeText={texto => this.props.modificaSenha(texto)}
             />
@@ -71,14 +77,14 @@ class formLogin extends Component {
               {this.props.erroLogin}
             </Text>
             <TouchableHighlight onPress={() => Actions.formCadastro()}>
-              <Text style={{ fontSize: 20, marginTop: 20, color: '#fff' }}>
+              <Text style={{ fontSize: 16, marginTop: 20, color: '#ffab91' }}>
                 Ainda não tem cadastro? Cadastre-se
               </Text>
             </TouchableHighlight>
           </View>
           <View style={{ flex: 2 }}>{this.renderBtnAcessar()}</View>
         </View>
-      </ImageBackground>
+      </View>
     );
   }
 }
@@ -99,5 +105,6 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   modificaEmail,
   modificaSenha,
-  autenticarUsuario
+  autenticarUsuario,
+  userStorage
 })(formLogin);
