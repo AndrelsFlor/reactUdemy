@@ -11,3 +11,4 @@ export const USUARIO_NO_STORAGE_LOCAL = 'usuario_no_storage_local';
 export const MODIFICA_ORIGEM_COMERCIAL = 'modifica_origem_comercial';
 export const MODIFICA_CPF_CNPJ = 'modifica_cpf_cnpj';
 export const MODIFICA_NOME_TITULAR = 'modifica_nome_titular';
+export const VERIFICA_CAMPO_VAZIO = 'verifica_texto_vazio';

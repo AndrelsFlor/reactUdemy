@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { BackHandler } from 'react-native';
 import { Router, Scene } from 'react-native-router-flux';
 import { userStorage } from './actions/AutenticacaoActions';
 import { connect } from 'react-redux';
@@ -7,8 +8,13 @@ import FormLogin from './components/formLogin';
 import FormCadastro from './components/FormCadastro';
 import BoasVindas from './components/BoasVindas';
 import Principal from './components/Principal';
+import OrigemComercial from './components/origemComercial';
+import origemComercial from './components/origemComercial';
 
 class Routes extends Component {
+  _handleBackButton() {
+    BackHandler.removeEventListener('hardwareBackPress');
+  }
   render() {
     return (
       <Router
@@ -41,6 +47,15 @@ class Routes extends Component {
             component={Principal}
             title="Principal"
             hideNavBar={true}
+          />
+          <Scene
+            key="origemComercial"
+            component={origemComercial}
+            title="Origem Comercial"
+            hideNavBar={true}
+            onEnter={() => {
+              this._handleBackButton;
+            }}
           />
         </Scene>
       </Router>

@@ -6,24 +6,34 @@ import {
   StyleSheet,
   TouchableHighlight,
   BackHandler,
-  Picker
+  Picker,
+  TextInput
 } from 'react-native';
-import { modificaOrigemComercial } from './../actions/ContratoActions';
+import {
+  modificaOrigemComercial,
+  modificaDocUnucio,
+  verificaCampoVazio
+} from './../actions/ContratoActions';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 
 class Principal extends Component {
-  componentDidMount() {
-    // console.log(this.props);
-    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
-  }
+  // componentDidMount() {
+  //   console.log(this.props);
+  //   BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+  // }
 
-  componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-  }
+  // componentWillUnmount() {
+  //   BackHandler.removeEventListener('hardwareBackPress');
+  // }
 
-  handleBackButton() {
-    return true;
+  // handleBackButton() {
+  //   return true;
+  // }
+  _verificaCampoVazio(texto) {
+    if (texto == null || texto == '') {
+      alert('Todos os campos são obrigatórios');
+    }
   }
 
   render() {
@@ -54,8 +64,12 @@ class Principal extends Component {
           </Picker> */}
           <TextField
             label={'CPF/CNPJ'}
+            style={{ color: this.props.color }}
             highlightColor={'#f4511e'}
             height={30}
+            value={this.props.docUnicoMask}
+            onChangeText={texto => this.props.modificaDocUnucio(texto)}
+            onBlur={texto => this._verificaCampoVazio(this.props.docUnicoMask)}
           />
           <TextField
             label={'Nome Titular / Razão Social'}
@@ -64,7 +78,10 @@ class Principal extends Component {
           />
         </View>
 
-        <TouchableHighlight onPress={() => false} style={styles.btnAvancar}>
+        <TouchableHighlight
+          onPress={() => Actions.origemComercial()}
+          style={styles.btnAvancar}
+        >
           <View style={{ alignItems: 'center' }}>
             <Text style={styles.txtButton}>Avançar</Text>
           </View>
@@ -112,7 +129,13 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
   return {
     docUnico: state.ContratoReducer.docUnico,
-    nomeTitular: state.ContratoReducer.nomeTitular
+    docUnicoMask: state.ContratoReducer.docUnicoMask,
+    nomeTitular: state.ContratoReducer.nomeTitular,
+    colot: state.ContratoReducer.color
   };
 };
-export default connect(mapStateToProps, { modificaOrigemComercial })(Principal);
+export default connect(mapStateToProps, {
+  modificaOrigemComercial,
+  modificaDocUnucio,
+  verificaCampoVazio
+})(Principal);

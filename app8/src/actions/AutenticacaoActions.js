@@ -1,6 +1,7 @@
 import firebase from 'firebase';
 import { Actions } from 'react-native-router-flux';
 import { AsyncStorage } from 'react-native';
+import axios from 'react-native-axios';
 import b64 from 'base-64';
 import {
   MODIFICA_EMAIL,
@@ -53,7 +54,6 @@ export const cadastraUsuario = ({ nome, email, senha }) => {
           .ref(`/contatos/${emailB64}`)
           .push({ nome })
           .then(value => {
-            console.log('entrou');
             return cadastroUsuarioSucesso(dispatch);
           });
         // cadastroUsuarioSucesso(dispatch);
@@ -78,14 +78,51 @@ const cadastroUsuarioErro = (erro, dispatch) => {
 };
 
 export const autenticarUsuario = (email, senha) => {
+  console.log('entrou autenticarUsuario');
   return dispatch => {
     dispatch({ type: LOGIN_EM_ANDAMENTO });
-    console.log();
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, senha)
-      .then(value => loginUsuarioSucesso(dispatch, email, senha))
-      .catch(erro => loginUsuarioErro(erro, dispatch));
+    fetch('http://api.midiasimples.com.br/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email,
+        password: senha
+      })
+    }).then(response => {
+      if (response.status == 200) {
+        loginUsuarioSucesso(dispatch, email, senha);
+      } else {
+        loginUsuarioErro(erro, dispatch);
+      }
+    });
+    // .then(resp => {
+    //   console.log(resp);
+    // });
+
+    // axios
+    //   .post('http://api.midiasimples.com.br/api/login', {
+    //     email: email,
+    //     password: senha
+    //   })
+    //   .then(dispatch, response => {
+    //     console.log(response);
+    //     if (response.status == 200) {
+    //       loginUsuarioSucesso(dispatch, email, senha);
+    //     } else {
+    //       let erro = response.data;
+    //       loginUsuarioErro(erro, dispatch);
+    //     }
+    //   })
+    //   .catch(error => loginUsuarioErro(error, dispatch));
+
+    //   firebase
+    //     .auth()
+    //     .signInWithEmailAndPassword(email, senha)
+    //     .then(value => loginUsuarioSucesso(dispatch, email, senha))
+    //     .catch(erro => loginUsuarioErro(erro, dispatch));
+    // };
   };
 };
 
@@ -101,14 +138,23 @@ export const userStorage = () => {
         if (emailBanco) {
           AsyncStorage.getItem('senha').then(senhaBanco => {
             dispatch({ type: LOGIN_EM_ANDAMENTO });
-            console.log();
-            firebase
-              .auth()
-              .signInWithEmailAndPassword(emailBanco, senhaBanco)
-              .then(value =>
-                loginUsuarioSucesso(dispatch, emailBanco, senhaBanco)
-              )
-              .catch(erro => loginUsuarioErro(erro, dispatch));
+
+            fetch('http://api.midiasimples.com.br/api/login', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                email: emailBanco,
+                password: senhaBanco
+              })
+            }).then(response => {
+              if (response.status == 200) {
+                loginUsuarioSucesso(dispatch, emailBanco, senhaBanco);
+              } else {
+                loginUsuarioErro(erro, dispatch);
+              }
+            });
           });
         } else {
           return Actions.formLogin();
@@ -128,9 +174,9 @@ const getSenha = (dispatch, emailBanco) => {
     });
   });
 };
-const verificaUserStorage = () => {};
 
 const loginUsuarioSucesso = (dispatch, email, senha) => {
+  console.log('entrou sucesso');
   dispatch({
     type: LOGIN_USUARIO_SUCESSO
   });
@@ -145,9 +191,10 @@ const loginUsuarioSucesso = (dispatch, email, senha) => {
 };
 
 const loginUsuarioErro = (erro, dispatch) => {
+  // console.log('entrou erro');
   console.log(erro);
   dispatch({
     type: LOGIN_USUARIO_ERRO,
-    payload: erro.message
+    payload: 'Houve um erro. Tente novamente mais tarde'
   });
 };
